@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knot — Keep Their Voice Alive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF7A11;
+    --cream: #FFF8F1;
+    --dark: #181D27;
+    --highlight: #FDD0A3;
+    --brown: #7F5539;
+    --serif: 'Merriweather', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--cream); color: var(--dark); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(24,29,39,0.96);
+    backdrop-filter: blur(12px);
+    height: 60px; padding: 0 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .logo { font-family: var(--serif); font-size: 22px; font-weight: 900; color: var(--orange); }
+  .nav-btn {
+    background: var(--orange); color: #fff; border: none;
+    padding: 9px 22px; border-radius: 100px;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: transform 0.15s, opacity 0.15s;
+  }
+  .nav-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 100px 24px 80px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 55% at 50% 10%, rgba(255,122,17,0.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,122,17,0.1);
+    border: 1px solid rgba(255,122,17,0.25);
+    color: var(--orange);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.7px;
+    text-transform: uppercase;
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 28px;
+    animation: up 0.7s ease both;
+  }
+  .pill-dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5.5vw, 64px);
+    font-weight: 900; color: var(--cream);
+    line-height: 1.18; max-width: 760px;
+    margin: 0 auto 22px;
+    animation: up 0.7s 0.08s ease both;
+  }
+  .hero h1 em { color: var(--orange); font-style: italic; }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: rgba(255,248,241,0.55);
+    max-width: 480px; margin: 0 auto 48px;
+    line-height: 1.8; font-weight: 300;
+    animation: up 0.7s 0.16s ease both;
+  }
+
+  .cta-group {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    margin-bottom: 64px;
+    animation: up 0.7s 0.24s ease both;
+  }
+  .btn-main {
+    background: var(--orange); color: #fff; border: none;
+    padding: 16px 40px; border-radius: 100px;
+    font-family: var(--sans); font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,122,17,0.35); }
+  .cta-note { font-size: 12px; color: rgba(255,248,241,0.3); }
+
+  /* DEVICE */
+  .device { animation: up 0.8s 0.32s ease both; width: 100%; max-width: 620px; }
+  .frame {
+    background: #0c1018; border-radius: 22px;
+    padding: 16px; border: 2px solid #222;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.55);
+  }
+  .screen { background: var(--cream); border-radius: 10px; overflow: hidden; }
+  .screen-bar {
+    background: var(--dark); padding: 10px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .screen-bar-logo { font-family: var(--serif); font-size: 15px; font-weight: 900; color: var(--orange); }
+  .screen-bar-time { font-size: 11px; color: rgba(255,255,255,0.3); }
+  .screen-body { padding: 20px; }
+  .screen-hi { font-size: 12px; color: var(--brown); font-weight: 500; }
+  .screen-name { font-family: var(--serif); font-size: 18px; font-weight: 900; color: var(--dark); margin: 2px 0 16px; }
+  .memory-card {
+    background: #fff; border-radius: 14px;
+    border: 1px solid rgba(127,85,57,0.12);
+    display: flex; overflow: hidden;
+  }
+  .mem-photo {
+    width: 140px; flex-shrink: 0;
+    background: linear-gradient(150deg, var(--highlight) 0%, var(--brown) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; position: relative;
+  }
+  .mem-photo-tag {
+    position: absolute; bottom: 7px; left: 6px; right: 6px;
+    background: rgba(24,29,39,0.75);
+    color: var(--cream); font-size: 9px;
+    padding: 4px 7px; border-radius: 5px; text-align: center;
+  }
+  .mem-info { padding: 14px 16px; flex: 1; }
+  .mem-title { font-family: var(--serif); font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .mem-quote { font-size: 11px; color: #777; line-height: 1.65; font-style: italic; margin-bottom: 10px; }
+  .rec-bar {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--dark); border-radius: 7px; padding: 7px 10px;
+  }
+  .rec-dot { width: 7px; height: 7px; background: #ff4040; border-radius: 50%; animation: blink 1s infinite; flex-shrink: 0; }
+  .rec-label { font-size: 10px; color: var(--orange); font-weight: 600; }
+  .wave { display: flex; gap: 2px; align-items: center; margin-left: auto; }
+  .wave span { width: 3px; background: var(--orange); border-radius: 2px; animation: wav 0.7s infinite; }
+  .wave span:nth-child(1){height:5px;animation-delay:0s}
+  .wave span:nth-child(2){height:13px;animation-delay:0.1s}
+  .wave span:nth-child(3){height:7px;animation-delay:0.2s}
+  .wave span:nth-child(4){height:17px;animation-delay:0.3s}
+  .wave span:nth-child(5){height:9px;animation-delay:0.4s}
+  .wave span:nth-child(6){height:13px;animation-delay:0.5s}
+  @keyframes wav { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.3)} }
+
+  @keyframes up { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+  /* QUOTE STRIP */
+  .quote-strip {
+    background: var(--orange);
+    padding: 56px 40px; text-align: center;
+  }
+  .quote-strip blockquote {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 400; font-style: italic;
+    color: #fff; max-width: 680px;
+    margin: 0 auto 16px; line-height: 1.6;
+  }
+  .quote-strip cite { font-size: 13px; color: rgba(255,255,255,0.65); font-style: normal; }
+
+  /* HOW */
+  .how { background: var(--dark); padding: 90px 40px; }
+  .how-inner { max-width: 960px; margin: 0 auto; }
+  .sec-label { font-size: 11px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  .sec-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.5vw, 42px);
+    font-weight: 900; color: var(--cream);
+    line-height: 1.2; margin-bottom: 48px;
+  }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .step {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 18px; padding: 28px 22px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .step:hover { background: rgba(255,122,17,0.05); border-color: rgba(255,122,17,0.18); }
+  .step-n {
+    font-family: var(--serif); font-size: 40px; font-weight: 900;
+    color: rgba(255,122,17,0.12); line-height: 1; margin-bottom: 16px;
+  }
+  .step-icon { font-size: 24px; margin-bottom: 12px; display: block; }
+  .step h3 { font-size: 15px; font-weight: 600; color: var(--cream); margin-bottom: 8px; }
+  .step p { font-size: 13px; color: rgba(255,248,241,0.45); line-height: 1.7; }
+
+  /* WHO */
+  .who { background: var(--cream); padding: 90px 40px; }
+  .who-inner { max-width: 960px; margin: 0 auto; }
+  .who .sec-title { color: var(--dark); }
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .who-card {
+    background: #fff; border-radius: 20px;
+    border: 1px solid rgba(127,85,57,0.12);
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .who-card:hover { transform: translateY(-4px); }
+  .who-top { padding: 28px 24px; }
+  .who-role { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--orange); margin-bottom: 6px; }
+  .who-name { font-family: var(--serif); font-size: 20px; font-weight: 900; color: var(--dark); margin-bottom: 8px; }
+  .who-desc { font-size: 13px; color: #888; line-height: 1.6; }
+  .who-bottom {
+    padding: 18px 24px;
+    border-top: 1px solid rgba(127,85,57,0.08);
+    background: rgba(255,248,241,0.6);
+  }
+  .who-quote { font-size: 13px; color: #666; font-style: italic; line-height: 1.65; }
+
+  /* WAITLIST */
+  .waitlist {
+    background: var(--dark); padding: 110px 24px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .waitlist::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255,122,17,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .waitlist-inner { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+  .waitlist h2 {
+    font-family: var(--serif);
+    font-size: clamp(30px, 4.5vw, 48px);
+    font-weight: 900; color: var(--cream);
+    line-height: 1.2; margin-bottom: 16px;
+  }
+  .waitlist h2 em { color: var(--orange); font-style: italic; }
+  .waitlist p { font-size: 16px; color: rgba(255,248,241,0.5); line-height: 1.75; font-weight: 300; margin-bottom: 40px; }
+  .wl-wrap { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .wl-input {
+    flex: 1; min-width: 250px;
+    padding: 15px 22px; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.06);
+    color: var(--cream); font-family: var(--sans); font-size: 15px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .wl-input::placeholder { color: rgba(255,248,241,0.3); }
+  .wl-input:focus { border-color: rgba(255,122,17,0.45); }
+  .wl-btn {
+    background: var(--orange); color: #fff; border: none;
+    padding: 15px 32px; border-radius: 100px;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .wl-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,122,17,0.4); }
+  .wl-note { font-size: 12px; color: rgba(255,248,241,0.25); margin-top: 16px; }
+  .wl-success {
+    display: none;
+    background: rgba(255,122,17,0.08);
+    border: 1px solid rgba(255,122,17,0.25);
+    border-radius: 16px; padding: 28px;
+  }
+  .wl-success h3 { font-family: var(--serif); font-size: 22px; color: var(--orange); margin-bottom: 8px; }
+  .wl-success p { font-size: 14px; color: rgba(255,248,241,0.5); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 900; color: var(--orange); }
+  footer p { font-size: 12px; color: rgba(255,248,241,0.2); }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    nav { padding: 0 20px; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .who-grid { grid-template-columns: 1fr; }
+    .how, .who, .waitlist { padding: 70px 24px; }
+    .quote-strip { padding: 48px 24px; }
+  }
+  @media (max-width: 540px) {
+    .steps { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Knot</div>
+  <button class="nav-btn" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="pill"><div class="pill-dot"></div>iPad App · Coming 2026</div>
+
+  <h1>Your family's photos are silent.<br><em>Their stories don't have to be.</em></h1>
+
+  <p class="hero-sub">Knot uses AI to animate old family photos with the voice of the person who lived them — turning a frozen moment into a living memory.</p>
+
+  <div class="cta-group">
+    <button class="btn-main" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">I want this →</button>
+    <span class="cta-note">Free early access · No credit card</span>
+  </div>
+
+  <div class="device">
+    <div class="frame">
+      <div class="screen">
+        <div class="screen-bar">
+          <div class="screen-bar-logo">Knot</div>
+          <div class="screen-bar-time">9:41 AM</div>
+        </div>
+        <div class="screen-body">
+          <div class="screen-hi">Good Morning,</div>
+          <div class="screen-name">Margaret 👋</div>
+          <div class="memory-card">
+            <div class="mem-photo">
+              📸
+              <div class="mem-photo-tag">Creating Living Portrait…</div>
+            </div>
+            <div class="mem-info">
+              <div class="mem-title">Grandma's Summer, 1962</div>
+              <div class="mem-quote">"That day in the garden, she was so happy. She always laughed at my bad jokes…"</div>
+              <div class="rec-bar">
+                <div class="rec-dot"></div>
+                <span class="rec-label">Recording</span>
+                <div class="wave">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE STRIP -->
+<section class="quote-strip">
+  <blockquote>"I have the stories in my head — I just can't get them out. It feels like work, so I just stopped doing it."</blockquote>
+  <cite>— Margaret, 74 · Retired Teacher · The person Knot was built for</cite>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="how-inner">
+    <div class="sec-label">How It Works</div>
+    <h2 class="sec-title">Just speak.<br>Knot does the rest.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <span class="step-icon">📷</span>
+        <h3>Pick a photo</h3>
+        <p>Scan a physical print or choose from your iPad. No technical steps.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <span class="step-icon">🎙️</span>
+        <h3>Tell the story</h3>
+        <p>Just press record and speak. Knot listens, captures your voice and emotion.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <span class="step-icon">✨</span>
+        <h3>Watch it come alive</h3>
+        <p>AI animates the photo — a smile, a blink — matched to the feeling in your words.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">04</div>
+        <span class="step-icon">🔗</span>
+        <h3>Share the memory</h3>
+        <p>Send a link. Your family experiences grandma's warmth — not just her picture.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="who">
+  <div class="who-inner">
+    <div class="sec-label">Who It's For</div>
+    <h2 class="sec-title" style="color:var(--dark)">Built for every generation.</h2>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-top">
+          <div class="who-role">The Storyteller</div>
+          <div class="who-name">Seniors 65+</div>
+          <div class="who-desc">Voice-first, no typing, works on the iPad they already own.</div>
+        </div>
+        <div class="who-bottom">
+          <p class="who-quote">"I want to pass down my stories — but my hands hurt when I type."</p>
+        </div>
+      </div>
+      <div class="who-card">
+        <div class="who-top">
+          <div class="who-role">The Protector</div>
+          <div class="who-name">Adult Children 35–55</div>
+          <div class="who-desc">Busy, guilt-driven, and willing to pay to preserve what matters.</div>
+        </div>
+        <div class="who-bottom">
+          <p class="who-quote">"I keep meaning to record her stories but life gets in the way."</p>
+        </div>
+      </div>
+      <div class="who-card">
+        <div class="who-top">
+          <div class="who-role">The Inheritor</div>
+          <div class="who-name">Grandchildren</div>
+          <div class="who-desc">Views living memories through a shared link — no app needed.</div>
+        </div>
+        <div class="who-bottom">
+          <p class="who-quote">"I want to know who they really were — not just see their face."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="waitlist-inner">
+    <h2>Don't let the<br><em>stories fade.</em></h2>
+    <p>Knot is in development. Join the waitlist and be among the first families to try it.</p>
+
+    <div id="wl-form">
+      <div class="wl-wrap">
+        <input class="wl-input" type="email" id="wl-email" placeholder="Your email address" />
+        <button class="wl-btn" onclick="signup()">Reserve My Spot →</button>
+      </div>
+      <p class="wl-note">No spam. Just a heads-up when Knot is ready. 🧡</p>
+    </div>
+
+    <div class="wl-success" id="wl-ok">
+      <h3>You're on the list! 🎉</h3>
+      <p>We'll reach out personally when Knot is ready for early access.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Knot</div>
+  <p>A thesis project by Aditya · 2026 · iPad-first · Voice-first · Family-first</p>
+</footer>
+
+<script>
+  function signup() {
+    const v = document.getElementById('wl-email').value.trim();
+    const inp = document.getElementById('wl-email');
+    if (!v || !v.includes('@') || !v.includes('.')) {
+      inp.style.borderColor = 'rgba(255,80,80,0.6)';
+      setTimeout(() => inp.style.borderColor = 'rgba(255,255,255,0.1)', 1600);
+      return;
+    }
+    document.getElementById('wl-form').style.display = 'none';
+    document.getElementById('wl-ok').style.display = 'block';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') signup(); });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.style.opacity = '1';
+        el.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.step, .who-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
